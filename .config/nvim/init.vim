@@ -22,10 +22,40 @@ call plug#begin(g:plugged_home)
   " Formater
   Plug 'Chiel92/vim-autoformat'
   Plug 'tpope/vim-sensible'
-"  Plug 'Shougo/denite.nvim'
-  Plug 'scrooloose/nerdtree'
+  Plug 'brooth/far.vim'
   Plug 'tpope/vim-fugitive'
+  Plug 'mileszs/ack.vim'
+  Plug 'cloudhead/neovim-fuzzy'
+  Plug 'srstevenson/vim-picker'
 call plug#end()
+
+
+nmap <unique> <leader>pe <Plug>(PickerEdit)
+nmap <unique> <leader>ps <Plug>(PickerSplit)
+nmap <unique> <leader>pv <Plug>(PickerVsplit)
+nmap <unique> <leader>pb <Plug>(PickerBuffer)
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
+
+
 filetype plugin indent on
 
 " Configurations Part
